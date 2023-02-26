@@ -1,6 +1,6 @@
 # Caffeinate
 
-A super simple utility for keeping your PC awake.
+A super simple CLI utility for keeping your PC awake.
 
 <img src="coffee.ico" width="48" />
 
@@ -11,6 +11,8 @@ Sleep(...);
 ```
 
 The computer is prevented from sleeping for as long as the program remains running. The display/monitor is still allowed to turn off. `SetThreadExecutionState` docs [here](https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-setthreadexecutionstate).
+
+And because it is CLI only, it can be used from session 0 (ex: from SSH connection).
 
 
 ## Download
@@ -47,6 +49,7 @@ caffeinate.exe 2m      # 2 minutes
 caffeinate.exe 36h     # 36 hours
 ```
 
+
 ## WSL
 
 **Optional:** Here is a small bash script for managing Caffeinate from WSL. Calling this script will kill all Caffeinate instances and start a new one in the background, thus ensuring only one is running and allowing you to reset or end the caffeinated duration.
@@ -56,3 +59,11 @@ caffeinate.exe 36h     # 36 hours
 Please modify to set the correct `caffeinate.exe` path and default duration as desired.
 
 The interface nearly identical to `caffeinate.exe`, but the script may default the duration to a value other than `forever`. Also, if a duration of `0` is given, all Caffeinate instances are killed but a new one is not started.
+
+
+## Alternatives
+
+- [Caffeine](https://www.zhornsoftware.co.uk/caffeine/) - If you want a GUI and lots of features.
+- [Insomnia](https://dlaa.me/Insomnia/) - If you want a simple GUI.
+
+I created Caffeinate because I wanted a CLI solution that could be used from session 0. Specifically, to be able to keep my PC awake while SSH'ed into WSL.
