@@ -1,6 +1,10 @@
 # Caffeinate
 
-Super simple utility for keeping your PC awake. All it does is:
+A super simple utility for keeping your PC awake.
+
+<img src="coffee.ico" width="48" />
+
+All it does is:
 ```c++
 SetThreadExecutionState(ES_CONTINUOUS | ES_SYSTEM_REQUIRED);
 Sleep(...);
