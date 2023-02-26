@@ -45,35 +45,10 @@ caffeinate.exe 36h     # 36 hours
 
 ## WSL
 
-**Optional:** Here is a small bash script for managing Caffeinate from WSL. Calling this script will kill all Caffeinate instances and start a new one in the background, thus ensuring only one is running and allowing you to reset or end the caffeinated duration. Please modify to set the correct `caffeinate.exe` path and default duration as desired.
+**Optional:** Here is a small bash script for managing Caffeinate from WSL. Calling this script will kill all Caffeinate instances and start a new one in the background, thus ensuring only one is running and allowing you to reset or end the caffeinated duration.
 
-```bash
-#!/bin/bash
-# Usage: caff [duration]
-# - Use duration of 0 to immediately decaffeinate.
-# - See: caffeinate.exe --help
+ - [caff](caff)
 
-set -euo pipefail
-caffeinate_exe='/mnt/c/Windows/System32/caffeinate.exe'
-default_duration=1h # Can set this to "forever"
-log_timeout_secs=1
+Please modify to set the correct `caffeinate.exe` path and default duration as desired.
 
-killall -q 'caffeinate.exe' || true
-
-duration="${1:-$default_duration}"
-if [ "$duration" = '0' ]; then
-  echo 'Decaffeinated'
-  exit
-fi
-
-log_fp='/tmp/caffeinate.log'
-cat /dev/null > "$log_fp"
-"$caffeinate_exe" $duration &> "$log_fp" &
-pid=$!
-
-# Wait for the first line to be printed from caffeniate.
-tail -f "$log_fp" | (
-  read -t $log_timeout_secs logs || true
-  echo "[$pid] ${logs:-"Check $log_fp"}"
-) || true
-```
+The interface nearly identical to `caffeinate.exe`, but the script may default the duration to a value other than `forever`. Also, if a duration of `0` is given, all Caffeinate instances are killed but a new one is not started.

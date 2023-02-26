@@ -1,0 +1,29 @@
+#!/bin/bash
+# Usage: caff [duration]
+# - Use duration of 0 to immediately decaffeinate.
+# - See: caffeinate.exe --help
+
+set -euo pipefail
+
+caffeinate_exe='/mnt/c/Windows/System32/caffeinate.exe'
+default_duration=1h # Can set this to "forever"
+log_timeout_secs=1
+
+killall -q 'caffeinate.exe' || true
+
+duration="${1:-$default_duration}"
+if [ "$duration" = '0' ]; then
+  echo 'Decaffeinated'
+  exit
+fi
+
+log_fp='/tmp/caffeinate.log'
+cat /dev/null > "$log_fp"
+"$caffeinate_exe" $duration &> "$log_fp" &
+pid=$!
+
+# Wait for the first line to be printed from caffeniate.
+tail -f "$log_fp" | (
+  read -t $log_timeout_secs logs || true
+  echo "[$pid] ${logs:-"Check $log_fp"}"
+) || true
